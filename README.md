@@ -24,3 +24,7 @@ If you go at this one alone, you're going to have a bad time. If you write tests
 ### When I run `./crowdtest.sh`, I get `send: spawn id exp8 not open`
 
 This probably means that your environment doesn't support kvm. Remove `-enable-kvm` from `runme.expect` (line 44) and retry.
+
+## License
+
+See `license.txt`. Also: [wtfpl.net](http://www.wtfpl.net/).
