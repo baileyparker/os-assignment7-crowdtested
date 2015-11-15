@@ -18,3 +18,9 @@ If you go at this one alone, you're going to have a bad time. If you write tests
   - Only submit your test's `*.c` files (please name them `crowd_*.c` where `*` is some descritive name)
   - Please verify that your tests work!
   - Pat yourself on the back for being an awesome person :)
+
+## FAQ?
+
+### When I run `./crowdtest.sh`, I get `send: spawn id exp8 not open`
+
+This probably means that your environment doesn't support kvm. Remove `-enable-kvm` from `runme.expect` (line 44) and retry.
