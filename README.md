@@ -15,8 +15,8 @@ If you go at this one alone, you're going to have a bad time. If you write tests
 ## How to Share
 
   1. Submit a PR with your test cases 
-    a. Please use NWF's TAP harness
-    b. Please follow the guidelines in part 3 of the assignment for shared tests
+    1. Please use NWF's TAP harness
+    2. Please follow the guidelines in part 3 of the assignment for shared tests
   2. Only submit your test's `*.c` files (please name them `crowd_*.c` where `*` is some descritive name)
   3. Please verify that your tests work!
   4. Pat yourself on the back for being an awesome person :)
