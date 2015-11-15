@@ -1,0 +1,213 @@
+#!/usr/bin/env expect
+
+package require Tclx 8.0
+
+set e_ok         0
+set e_intr       3
+
+set e_earlypanic 4
+set e_earlyout   5
+
+set e_loadfail   6
+set e_loadprompt 7
+set e_loadpanic  8
+set e_loadout    9
+set e_loadeof    10
+
+set e_fail       11
+set e_bail       12
+set e_tooshort   13
+set e_panic      14
+set e_timeout    15
+set e_eof        16
+
+set e_toolong    17
+set e_lasthang   18
+set e_lasteof    19
+
+# You can vary the prefix emitted by the test harness by building the entire
+# source tree with make CPPFLAGS='-DTEST_PREFIX_PREFIX=\"TAPISH: \"' for
+# example.  The various layers of quotation are to protect against the
+# outermost shell and the shell spawned by make.
+if {[info exists env(RUNME_PFX)]} {
+  set pfx "(?p)^\n$env(RUNME_PFX)"
+} else {
+  set pfx "(?p)^\nTAPME: "
+}
+
+# By default, we want to invoke some sane way of getting qemu spun up.  But
+# when testing, we probably don't want to invoke 'make qemu' since the
+# students may have their own feelings on that.
+if {[info exists env(RUNME_CMD)]} {
+  set spawncmd $env(RUNME_CMD)
+} else {
+  set spawncmd {make "QEMUEXTRA=-snapshot -enable-kvm" "CPUS=2" qemu-nox}
+}
+
+# We can try to run a particular test over and over, though by default we
+# will do so only once.
+if {[info exists env(RUNME_ITERS)]} {
+  set iters $env(RUNME_ITERS)
+} else {
+  set iters 1
+}
+
+set eol ".*(?=\n)"
+set panicre "(?p)cpu.: panic:${eol}"
+
+set tname "[lindex $argv 0]";
+
+proc bail { exitwith } {
+  exec kill "[exp_pid]"
+  close
+  send_user "\n"
+  exit $exitwith
+}
+
+proc paniced { where with } {
+  # See if we get a little bit more detail
+  set timeout 4
+  expect -regex "\n\( \[\^ \]*\){10}"
+  send_user "\nFailure: panic ${where}\n"
+  bail $with
+}
+
+
+proc bailsig {} {
+  global e_intr
+  bail $e_intr
+}
+
+signal trap SIGINT bailsig
+
+log_file "runme.log"
+spawn {*}$spawncmd
+
+# Wait for the system to boot
+set timeout 10
+expect {
+  -ex "\n$ "       {}
+  -regex "${panicre}" { paniced "booting" $e_earlypanic }
+  timeout          { send_user "Failure: time out booting\n"
+                     bail $e_earlyout
+                   }
+}
+
+set cmdline "[join $argv]"
+
+for {set iter 0} {$iter < $iters} {incr iter} {
+
+  # send_user "===> Harness iteration $iter\n"
+
+  send "$cmdline\n"
+
+  set timeout 2
+  expect {
+    -re "(?p)${cmdline}\r(?=\n)"
+      { # send_user "===> shell OK " 
+      }
+    timeout
+      { # send_user "Failure: timeout waiting for shell echo"
+        bail $e_loadout
+      }
+  }
+
+  # Wait for the test to start and tell us how many
+  # success lines we should expect
+  set timeout 10
+  while {! [info exists ntests]} {
+    expect {
+      -regex "${pfx}${tname} 1\\.\\.(\\d*)\r"
+        { global ntests
+          set ntests "$expect_out(1,string)"
+        }
+      -regex "${pfx}${tname} Bail out!${eol}"
+        { send_user "Bail out before start\n"
+          bail $e_loadfail
+        }
+      -ex "\n$ "
+        { send_user "Fail: prompt while waiting to start up (did exec fail?)\n"
+          bail $e_loadprompt
+        }
+      # unanchored!
+      -regex "${panicre}" { paniced "while loading" $e_loadpanic }
+      # Consume other outputs and discard as if they were comments
+      # This must come as the last pattern that looks at input
+      -regex "(?p).${eol}" { }
+      timeout
+        { send_user "Failure: time out getting started\n"
+          bail $e_loadout
+        }
+      eof
+        { send_user "Failure: EOF on TAP stream\n"
+          bail $e_loadeof
+        }
+    }
+  }
+
+  # Wait for that many tests to pass
+  set timeout 60
+  set exitwith $e_ok
+  for {set this 0} {$this < $ntests} {incr this} {
+    expect {
+      -regex "${pfx}${tname} #${eol}"
+        { incr this -1
+          # '$expect_out(buffer)'
+          # send_user "===> Harness got comment\n"
+        }
+      -regex "${pfx}${tname} ok ${eol}"
+        { # send_user "===> Harness acknowledge OK! ${this}\n"
+        }
+      -regex "${pfx}${tname} not ok ${eol}"
+        { send_user "Failure in simulation\n"
+          set exitwith $e_fail
+        }
+      -regex "${pfx}${tname} Bail out!${eol}"
+        { send_user "Bail out in simulation\n"
+          bail $e_bail
+        }
+      -ex "\n$ "
+        { send_user "Failure: prompt after ${this} tests\n"
+          bail $e_tooshort
+        }
+      -regex "${panicre}" { paniced "while testing" $e_panic }
+
+      # Consume other outputs and discard as if they were comments
+      # This must come as the last pattern that looks at input
+      -regex "(?p).${eol}"
+        { # send_user "===> Some other line\n" 
+          incr this -1
+        }
+      timeout
+        { send_user "Failure: time out\n"
+          send \020
+          sleep 5
+          bail $e_timeout
+        }
+      eof
+        { send_user "Failure: EOF on TAP stream\n"
+          bail $e_eof
+        }
+    }
+  }
+
+  # Hang around for a prompt
+  set timeout 10
+  while {1} {
+   expect {
+    -regex "${pfx}${tname} \[^#\].*${eol}"
+                { set exitwith $e_toolong
+                  send_user "Warning!  Unexpected test line\n"
+                }
+    -ex "\n$ "  { break }
+    timeout     { send_user "Failure: prompt time out (program hung?)\n"
+                  bail $e_lasthang
+                }
+    eof         { send_user "Failure: EOF on TAP stream\n"
+                  bail $e_lasteof
+                }
+   }
+  }
+
+}
+bail $exitwith
