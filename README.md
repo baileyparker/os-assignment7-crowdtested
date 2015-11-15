@@ -14,12 +14,12 @@ If you go at this one alone, you're going to have a bad time. If you write tests
 
 ## How to Share
 
-  - Submit a PR with your test cases (please use NWF's TAP test harness)
-  - Only submit your test's `*.c` files (please name them `crowd_*.c` where `*` is some descritive name)
-  - Please verify that your tests work!
-  - Pat yourself on the back for being an awesome person :)
+  1. Submit a PR with your test cases (please use NWF's TAP test harness)
+  2. Only submit your test's `*.c` files (please name them `crowd_*.c` where `*` is some descritive name)
+  3. Please verify that your tests work!
+  4. Pat yourself on the back for being an awesome person :)
 
-## FAQ?
+## FAQ
 
 ### When I run `./crowdtest.sh`, I get `send: spawn id exp8 not open`
 
