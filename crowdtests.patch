@@ -1,6 +1,6 @@
 --- Makefile	2015-11-15 03:53:29.000000000 -0500
 +++ Makefile	2015-11-15 03:44:18.000000000 -0500
-@@ -183,5 +183,9 @@
+@@ -183,5 +183,10 @@
  	_usertests\
  	_wc\
  	_zombie\
@@ -8,5 +8,6 @@
 +	_crowd_childb4parent\
 +	_crowd_parentb4child\
 +	_crowd_yieldother\
++	_crowd_gettid\
 
  fs.img: mkfs README $(UPROGS)
