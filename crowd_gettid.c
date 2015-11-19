@@ -1,10 +1,16 @@
 #include "types.h"
 #include "user.h"
 
-/* Authors: Bailey & Sam */
 #define TEST_NAME "crowd_gettid"
 #include "318_test-tapish.h"
 
+/* Authors: Bailey & Sam */
+
+/* Checks to confirm that gettid() isn't returning garbage by checking it against the
+   built in getpid() and ensuring they are the same for the first thread in the process.
+   Unfortunately we can't check threads created by tspawn() as we don't know what happens
+   under to hood to determine the tid - you should modify the test to check that based
+   on whatever your kernel does */
 
 int test_fork(void);
 
