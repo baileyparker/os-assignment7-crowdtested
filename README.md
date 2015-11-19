@@ -18,8 +18,16 @@ If you go at this one alone, you're going to have a bad time. If you write tests
     1. Please use NWF's TAP harness
     2. Please follow the guidelines in part 3 of the assignment for shared tests
   2. Only submit your test's `*.c` files (please name them `crowd_*.c` where `*` is some descritive name)
-  3. Please verify that your tests work!
+  3. Please verify that your tests work!\*
   4. Pat yourself on the back for being an awesome person :)
+
+Note: make sure that your tests properly define their name **before** including `318_test-tapish.h`. Example:
+
+```
+// Note that the crowd_ prefix is important, this MUST match the binary's name
+#define TEST_NAME "crowd_can_test"
+#include "318_test-tapish.h"
+```
 
 ## FAQ
 
