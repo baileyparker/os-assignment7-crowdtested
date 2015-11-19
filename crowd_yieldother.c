@@ -2,7 +2,7 @@
 #include "stat.h"
 #include "user.h"
 
-#define TEST_NAME "318_yieldother"
+#define TEST_NAME "crowd_yieldother"
 #include "318_test-tapish.h"
 
 /*Authors: Emily and Jose*/

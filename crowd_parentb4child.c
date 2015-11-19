@@ -2,7 +2,7 @@
 #include "stat.h"
 #include "user.h"
 
-#define TEST_NAME "318_parentb4child"
+#define TEST_NAME "crowd_parentb4child"
 #include "318_test-tapish.h"
 
 /*Authors: Emily and Jose*/
