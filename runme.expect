@@ -125,7 +125,7 @@ for {set iter 0} {$iter < $iters} {incr iter} {
         { send_user "Bail out before start\n"
           bail $e_loadfail
         }
-      -ex "\n$ "
+      -ex "^\n$ "
         { send_user "Fail: prompt while waiting to start up (did exec fail?)\n"
           bail $e_loadprompt
         }
@@ -166,7 +166,7 @@ for {set iter 0} {$iter < $iters} {incr iter} {
         { send_user "Bail out in simulation\n"
           bail $e_bail
         }
-      -ex "\n$ "
+      -ex "^\n$ "
         { send_user "Failure: prompt after ${this} tests\n"
           bail $e_tooshort
         }
