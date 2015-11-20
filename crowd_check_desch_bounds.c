@@ -7,6 +7,8 @@
 
 /* Authors: Bailey & Sam */
 
+#define STKSIZE 1024
+
 #define S_CHILD_READY 1
 #define S_PARENT_READY 2
 #define S_CHILD_STILL_RUNNING 3
@@ -25,7 +27,9 @@ main(void)
 
   TEST_DIAG("This test will timeout if it fails");
 
-  TEST_EXIT_IF((stack = malloc(1024)) == 0, "malloc failed");
+  TEST_EXIT_IF((stack = malloc(STKSIZE)) == 0, "malloc failed");
+  stack += STKSIZE;
+
   TEST_EXIT_IF(tspawn((void *) stack, thread, 0) < 0, "tspawn failed");
 
   // Wait for child to signal that it's ready
