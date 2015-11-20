@@ -24,6 +24,7 @@ static void
 baddie(void *a) {
   int *addr = (int *) 0xdeadbea7;
   TEST_DIAG("%d", *addr);
+  TEST_FAIL("Baddie wasn't killed");
   while(1);
 }
 
