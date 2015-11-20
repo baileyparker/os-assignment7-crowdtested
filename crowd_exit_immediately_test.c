@@ -57,7 +57,7 @@ main(void)
     TEST_FAIL_IF(running[i], "test %d still running after exit()", i);
   }
 
-  TEST_FINI("stress test passed");
+  TEST_FINI("all threads cleaned up on exit()");
 
   exit();
 }
