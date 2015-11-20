@@ -2,7 +2,7 @@
 #include "user.h"
 #include "param.h"
 
-#define TEST_NAME "crowd_tspawn_texit_stress_test"
+#define TEST_NAME "crowd_exit_immediately_test"
 #include "318_test-tapish.h"
 
 /* Authors: Bailey & Sam */
