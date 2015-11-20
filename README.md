@@ -37,7 +37,7 @@ This probably means that your environment doesn't support kvm. Remove `-enable-k
 
 ### When I run `./crowdtest.sh`, I get `make fs.img failed`
 
-You need to increase the `FSSIZE` constant in `param.h`, because the the filesystem is too small for all of the test executables (you can confirm this by looking at the `mkfs.c` output, it should say something like 900 of total 1000 blocks used). Increase it to something reasonable like `3000`. This requires you to do a `make clean`.
+You need to increase the `FSSIZE` constant in `param.h`, because the the filesystem is too small for all of the test executables (you can confirm this by looking at the `mkfs.c` output, it should say something like 900 of total 1000 blocks used). Increase it to something reasonable like `10000`. This requires you to do a `make clean`.
 
 ## License
 

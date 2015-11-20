@@ -1,6 +1,6 @@
 --- Makefile	2015-11-15 03:53:29.000000000 -0500
 +++ Makefile	2015-11-15 03:44:18.000000000 -0500
-@@ -183,4 +183,19 @@
+@@ -183,4 +183,20 @@
  	_usertests\
  	_wc\
  	_zombie\
@@ -19,4 +19,5 @@
 +	_crowd_yieldsame\
 +	_crowd_check_tspawn_bounds\
 +	_crowd_check_desch_bounds\
++	_crowd_tspawn_texit_stress_test\
 
