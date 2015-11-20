@@ -35,6 +35,10 @@ Note: make sure that your tests properly define their name **before** including 
 
 This probably means that your environment doesn't support kvm. Remove `-enable-kvm` from `runme.expect` (line 44) and retry.
 
+### When I run `./crowdtest.sh`, I get `make fs.img failed`
+
+You need to increase the `FSSIZE` constant in `param.h`, because the the filesystem is too small for all of the test executables (you can confirm this by looking at the `mkfs.c` output, it should say something like 900 of total 1000 blocks used). Increase it to something reasonable like `3000`. This requires you to do a `make clean`.
+
 ## License
 
 See `license.txt`. Also: [wtfpl.net](http://www.wtfpl.net/).
