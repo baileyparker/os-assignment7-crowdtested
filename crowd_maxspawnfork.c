@@ -29,6 +29,7 @@ int main() {
   TEST_DIAG("WARNING: this test will fail if run with more than two existing processes");
   int parent_pid = getpid();
   pid = fork();
+  TEST_EXIT_IF(pid < 0, "Fork failed.\n");
   if (pid == 0) {
      for(i = 0; i < LOTS; i++) {
         TEST_DIAG("spawned %d", i + 5);
@@ -45,8 +46,8 @@ int main() {
   desch(&guard);
   TEST_EXIT_IF(fork() > 0, "Fork succeeded even though there were no "
     "more threads available.");
-  TEST_FINI();
   kill(pid);
   wait();
+  TEST_FINI();
   exit();
 }

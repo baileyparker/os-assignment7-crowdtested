@@ -10,6 +10,8 @@
 
 /*Authors: Jose and Emily*/
 
+/*Checks that killing a tid that isn't a pid fails.*/
+
 #define ARG 999
 #define LOTS NTHR-4
 #define STKSIZE 1024
