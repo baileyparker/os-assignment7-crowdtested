@@ -10,7 +10,7 @@
 #define STKSIZE 1024
 #define THREADS (NTHR - 4)
 #define SPINS 8192
-#define PASSES 16
+#define PASSES 4
 
 // We have to use an array to verify that everything passes, because
 // we can't TEST_FINI from the threads as this spams the terminal
@@ -31,7 +31,9 @@ main(void)
 
   TEST_STRT(1);
 
+  TEST_DIAG("WARNING: this test takes ~40 seconds to complete without KVM");
   TEST_DIAG("this test will timeout if it fails");
+  TEST_DIAG("this test has an unavoidable race condition that may cause it to fail rarely");
 
   for(i = 0; i < PASSES; i++) {
     stress_test(i);
@@ -68,6 +70,13 @@ stress_test(int pass)
       yield(-1);
     }
   }
+
+  // There is inherently a race condition in this code, but as noted below we can't use
+  // spinlocks as this would mess up the timing
+  // The very last thread could set finished[THREADS] = 1 and the while look could see that
+  // before the thread actually finished texit(). The only way to combat this without modifing
+  // the kernel is to sleep a bit to try to avoid this
+  sleep(250); // #YOLOMAGICNUMBER
 }
 
 // We don't care at all about the value of this (so no locks), we just don't want gcc
