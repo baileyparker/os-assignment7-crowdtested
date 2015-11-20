@@ -36,29 +36,33 @@ set -o pipefail
 # Iterate through all of our crowd_* tests
 while IFS= read -r -d $'\0' f; do
     testname="$(echo $f | sed 's/\.c$//')"
-    printf "${C_BLUE}============================== $testname ==============================${C_RESET}\n";
-    echo "";
 
-    # Make sure each test has a clean filesystem
-    rm -f fs.img
+    printf "${C_BLUE}============================== $testname ==============================${C_RESET}\n\n";
 
-    # Run each test in a separate xv6
-    # (Only starts piping output after we see a prompt)
-    testresult=$(/usr/bin/env expect runme.expect "$testname" | sed '1,/\$ crowd_/d' | tee >(cat - >&5))
+    if [ "$testname" = "crowd_yield_lots" ]; then
+        printf "This test will never exit, you have to run it manually and verify its output.\n"
+    else
+        # Make sure each test has a clean filesystem
+        rm -f fs.img
 
-    # Check for test failure
-    if [ "${PIPESTATUS[0]}" -ne 0 ]; then
-        teststatus=1;
-        failed+=" $testname";
+        # Run each test in a separate xv6
+        # (Only starts piping output after we see a prompt)
+        testresult=$(/usr/bin/env expect runme.expect "$testname" | sed '1,/\$ crowd_/d' | tee >(cat - >&5))
 
-        if echo "$testresult" | grep "exec ${testname} failed"; then
-            printf "${C_YELLOW}\nThe test failed to run. Did you \`patch -i crowdtests.patch\`?\n\n${C_RESET}";
+        # Check for test failure
+        if [ "${PIPESTATUS[0]}" -ne 0 ]; then
+            teststatus=1;
+            failed+=" $testname";
+
+            if echo "$testresult" | grep "exec ${testname} failed"; then
+                printf "${C_YELLOW}\nThe test failed to run. Did you \`patch -i crowdtests.patch\`?\n\n${C_RESET}";
+            fi;
+
+            printf "${C_RED}!!!!!!!!!!!!!!!!!!!!!!!!!!! $testname FAILED !!!!!!!!!!!!!!!!!!!!!!!!!!${C_RESET}\n";
         fi;
 
-        printf "${C_RED}!!!!!!!!!!!!!!!!!!!!!!!!!!! $testname FAILED !!!!!!!!!!!!!!!!!!!!!!!!!!${C_RESET}\n";
+        ((testsran++))
     fi;
-
-    ((testsran++))
 
     echo "";
     echo "";
