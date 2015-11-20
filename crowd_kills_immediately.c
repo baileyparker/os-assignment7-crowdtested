@@ -72,6 +72,7 @@ main(void)
 
   TEST_FINI("all threads cleaned up on kill");
 
+  wait(); // to actually clean up our fork
   exit();
 }
 
