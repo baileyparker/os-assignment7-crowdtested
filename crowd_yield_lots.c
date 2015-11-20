@@ -14,7 +14,7 @@
    Also stress tests gettid() as a side benefit */
 
 #define THREADS 50
-#define ITERATIONS 10000
+#define ITERATIONS 1000
 
 int main() {
   int main_pid;
@@ -27,15 +27,16 @@ int main() {
   for(i = 0; i < THREADS; i++) {
     if(fork() == 0) {
       for(i = 0; i < ITERATIONS; i++) {
-        printf(1, "%d\n", gettid());
+//        printf(1, "%d\n", gettid());
         yield(main_pid);
         //printf(1, "I'm back from the yield!\n");
       }
     }
   }
   for(i = 0; i < ITERATIONS; i++) {
-    printf(1, "%d\n", gettid());
+//    printf(1, "%d\n", gettid());
     yield(-1);
+    wait();
   }
   exit();
 }
