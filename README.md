@@ -38,3 +38,9 @@ This probably means that your environment doesn't support kvm. Remove `-enable-k
 ## License
 
 See `license.txt`. Also: [wtfpl.net](http://www.wtfpl.net/).
+
+## Shoutouts
+
+SO to these awesome people who've contributed a lot of test cases:
+
+  - @ewagner46 (Emily Wagner) & @junr03 (Jose Ulises Nino Rivera)
