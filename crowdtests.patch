@@ -1,6 +1,6 @@
 --- Makefile	2015-11-15 03:53:29.000000000 -0500
 +++ Makefile	2015-11-15 03:44:18.000000000 -0500
-@@ -183,4 +183,25 @@
+@@ -183,4 +183,29 @@
  	_usertests\
  	_wc\
  	_zombie\
@@ -25,4 +25,8 @@
 +	_crowd_sbrkhuge\
 +	_crowd_sbrkwiggle\
 +	_crowd_yieldself\
++	_crowd_text_late\
++	_crowd_text_many\
++	_crowd_text_single\
++	_crowd_monkey\
 
