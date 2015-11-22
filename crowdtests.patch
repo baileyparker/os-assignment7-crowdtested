@@ -25,9 +25,9 @@
 +	_crowd_sbrkhuge\
 +	_crowd_sbrkwiggle\
 +	_crowd_yieldself\
-+	_crowd_text_late\
-+	_crowd_text_many\
-+	_crowd_text_single\
++	_crowd_texit_late\
++	_crowd_texit_many\
++	_crowd_texit_single\
 +	_crowd_monkey\
 +	_crowd_fork_no_procs\
 +	_crowd_file_rc_contention\
