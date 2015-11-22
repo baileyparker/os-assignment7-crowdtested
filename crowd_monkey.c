@@ -2,7 +2,7 @@
 #include "stat.h"
 #include "user.h"
 
-#define TEST_NAME "crowd_texit_many"
+#define TEST_NAME "crowd_monkey"
 #include "318_test-tapish.h"
 
 /* Authors Sam and Bailey */
