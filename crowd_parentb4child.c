@@ -14,6 +14,7 @@ and thread statuses.*/
 
 int main() {
  TEST_STRT(2);
+ TEST_DIAG("This test may fail due to an unavoidable race condition");
  int f = fork();
  if (f < 0) {
    TEST_EXIT("Fork failed");

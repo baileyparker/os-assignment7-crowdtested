@@ -16,6 +16,7 @@ initproc running at this time.)*/
 
 int main() {
  TEST_STRT(2);
+ TEST_DIAG("This test may fail due to an unavoidable race condition");
  int i;
  int parent_tid = gettid();
  int f = fork();

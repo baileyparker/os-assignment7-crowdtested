@@ -19,7 +19,7 @@ int test_fork(void);
 int
 main(void)
 {
-  TEST_STRT(FORKS);
+  TEST_STRT(FORKS + 1);
 
   if(test_fork() == 0) {
     recursive_fork(1);
