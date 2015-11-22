@@ -1,6 +1,10 @@
 --- Makefile	2015-11-15 03:53:29.000000000 -0500
 +++ Makefile	2015-11-15 03:44:18.000000000 -0500
+<<<<<<< HEAD
 @@ -183,4 +183,29 @@
+=======
+@@ -183,4 +183,27 @@
+>>>>>>> 68507ab296abec5a9cd8dfa4828ce5cb9a1c1237
  	_usertests\
  	_wc\
  	_zombie\
@@ -29,4 +33,6 @@
 +	_crowd_text_many\
 +	_crowd_text_single\
 +	_crowd_monkey\
++	_crowd_fork_no_procs\
++	_crowd_file_rc_contention\
 
